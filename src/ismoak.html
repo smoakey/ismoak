@@ -1,0 +1,88 @@
+<div
+    dropdown 
+    keyboard-nav
+    auto-close="outsideClick"
+    on-toggle="ismoakDropdown.toggle(open)"
+    class="multiselect btn-group">
+    <button
+        dropdown-toggle
+        type="button" 
+        class="btn btn-sm btn-default"
+        ng-disabled="ismoakDropdown.disabled()">
+        <span class="value"></span>
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <ul class="utils">
+            <li class="buttons">
+                <button 
+                    type="button" 
+                    class="btn btn-xs btn-default select-all"
+                    ng-disabled="ismoakDropdown.allSelected(ismoakDropdown.items)" 
+                    ng-click="ismoakDropdown.selectAll()">
+                    {{ ismoakDropdown.ops.selectAllBtnText }}
+                </button>
+                <button 
+                    type="button" 
+                    class="btn btn-xs btn-default select-none"
+                    ng-disabled="ismoakDropdown.noneSelected(ismoakDropdown.items)" 
+                    ng-click="ismoakDropdown.selectNone()">
+                    {{ ismoakDropdown.ops.selectNoneBtnText }}
+                </button>
+            </li>
+            <li class="search" ng-if="ismoakDropdown.ops.searchable">
+                <div class="form-group">
+                    <input
+                        type="text" 
+                        class="form-control input-sm"
+                        placeholder="Filter"
+                        ng-model="ismoakDropdown.filterText"
+                        clear-input />
+                </div>
+            </li>
+        </ul>
+        <ul class="results" ng-if="!ismoakDropdown.ops.groupBy">
+            <li
+                ng-repeat="item in filteredItems = (ismoakDropdown.items | filter: ismoakDropdown.filterText | orderBy: ismoakDropdown.ops.orderBy)"
+                ng-class="{'active': ismoakDropdown.isSelected(item)}">
+                <a ng-click="ismoakDropdown.select(item)">
+                    <input type="checkbox" ng-checked="ismoakDropdown.isSelected(item)" />
+                    {{ item[ismoakDropdown.ops.displayProp] }}
+                </a>
+            </li>
+        </ul>
+
+        <ul class="results" ng-if="ismoakDropdown.ops.groupBy">
+            <li
+                class="result-group"
+                ng-init="ismoakDropdown.groups[$index].isOpen = ismoakDropdown.ops.groupsOpen"
+                ng-repeat="(itemGroupName, itemGroup) in ismoakDropdown.itemsGrouped"
+                ng-class="{
+                    'open': ismoakDropdown.groups[$index].isOpen || ismoakDropdown.filterText.length > 0,
+                    'active': ismoakDropdown.allSelected(itemGroup)
+                }">
+                <a ng-click="ismoakDropdown.selectGroup(ismoakDropdown.indexById(itemGroup))">
+                    <input 
+                        type="checkbox" 
+                        ng-checked="ismoakDropdown.allSelected(ismoakDropdown.indexById(itemGroup))" 
+                        indeterminate="!ismoakDropdown.allSelected(ismoakDropdown.indexById(itemGroup)) && !ismoakDropdown.noneSelected(ismoakDropdown.indexById(itemGroup))" />
+                    {{ itemGroupName }}
+                </a>
+                <i 
+                    class="fa fa-caret-down"
+                    ng-class="{'fa-caret-up': ismoakDropdown.groups[$index].isOpen || ismoakDropdown.filterText.length > 0}"
+                    ng-click="ismoakDropdown.groups[$index].isOpen = !ismoakDropdown.groups[$index].isOpen"></i>
+                <ul>
+                    <li
+                        ng-repeat="item in filteredItems = (itemGroup | filter: ismoakDropdown.filterText | orderBy: ismoakDropdown.ops.orderBy)"
+                        ng-class="{'active': ismoakDropdown.isSelected(item)}">
+                        <a ng-click="ismoakDropdown.select(item)">
+                            <input type="checkbox" ng-checked="ismoakDropdown.isSelected(item)" />
+                            {{ item[ismoakDropdown.ops.displayProp] }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </ul>
+</div>

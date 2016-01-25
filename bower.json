@@ -1,0 +1,29 @@
+{
+  "name": "iSmoak",
+  "version": "0.1.0",
+  "authors": [
+    "Chris Smoak <christopher.smoak@gmail.com>"
+  ],
+  "main": [
+    "./dist/ngc-client-lib.min.css",
+    "./dist/ngc-client-lib.min.js",
+    "./dist/ngc-client-lib.min.js.map"
+  ],
+  "ignore": [
+    "src",
+    ".*",
+    "bower.json",
+    "gulpfile.js",
+    "karma.conf.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": "1.4.9",
+    "angular-bootstrap": "~1.1.1",
+    "lodash": "~4.0.1",
+    "angular-ui-indeterminate": "~1.0.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.9"
+  }
+}
